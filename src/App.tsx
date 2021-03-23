@@ -7,12 +7,18 @@ import './styles/form.scss'
 import './styles/container.scss'
 import './constants/mocked-trivia.js'
 import { mockedTrivia } from './constants/mocked-trivia.js'
+import Form from './components/form/form'
+import Quiz from './components/quiz/quiz'
 
 const categoriesURL = 'https://opentdb.com/api_category.php'
 let quizURL = 'https://opentdb.com/api.php?amount=15'
 
 
-const difficulty: string[] = ['easy', 'medium', 'hard']
+enum Difficulty {
+    EASY= 'easy',
+    MEDIUM = 'medium', 
+    HARD = 'hard',
+}  
 const type = [
     {
         type: 'multiple',
@@ -23,6 +29,9 @@ const type = [
         alias: 'True / False',
     },
 ]
+
+
+console.log(Object.keys(Difficulty))
 
 function App() {
     const [categoryList, setCategoryList] = useState<any[]>([])
@@ -37,6 +46,8 @@ function App() {
                 setCategoryList(data.trivia_categories)
             })
     }, [])
+
+    console.log(quizOptions)
 
     // This effect calls the trivia questions to render in the trivia section
     // @team: hay que crear una funcion que obtenga los values de quizOptionz y revise que propiedades tiene, si existen o no para popular la URL final del fetch de las preguntas como abajo se muestra
@@ -76,6 +87,7 @@ function App() {
 
     return (
         <div className='App'>
+            <Form/>
             <h2>OUR OPEN TRIVIA</h2>
             <form
                 className='form'
@@ -98,7 +110,7 @@ function App() {
                 <br />
                 <select name='difficulty' ref={register({ required: false })}>
                     <option value=''>Any</option>
-                    {difficulty.map((item, i) => (
+                    {Object.values(Difficulty).map((item, i) => (
                         <option key={i} value={item} placeholder='a'>
                             {item}
                         </option>
@@ -125,7 +137,8 @@ function App() {
             </form>
             <br />
             <br />
-
+            
+            <Quiz/>
             <div className='container-trivia'>
                 <h4>TRIVIA!</h4>
                 {questions.length > 0 ? (

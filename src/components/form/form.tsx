@@ -1,5 +1,5 @@
 export default function Form () {
     return (
-        <h1>I will be a form</h1>
+        <h1>I am a form component</h1>
     )
 }
