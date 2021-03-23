@@ -1,0 +1,11 @@
+@import './common.scss';
+
+.container-trivia {
+    color: black;
+}
+
+.answers {
+    @include wrap-flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

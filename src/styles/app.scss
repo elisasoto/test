@@ -1,0 +1,13 @@
+@import './common.scss';
+
+.App{
+    font-family: $font;
+    font-size: $font-title;
+    color: white;
+    @include justifications;
+}
+
+body {
+    @include color-commons;
+    @include center-flex;
+}

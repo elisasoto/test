@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
+
+$font: 'Covered By Your Grace', cursive;
+$font-title: 25px;
+$font-content: 10px;
+
+@mixin tester {
+    border: 1px solid black;
+}
+
+
+.flex {
+    display: flex;
+    align-items: center;
+  }
+  
+  @mixin center-flex {
+    @extend .flex;
+    justify-content: center;
+  }
+  
+  @mixin between-flex {
+    @extend .flex;
+    justify-content: space-between;
+  }
+  
+  @mixin around-flex {
+    @extend .flex;
+    justify-content: space-around;
+  }
+
+  @mixin evenly-flex {
+    @extend .flex;
+    justify-content:space-evenly;
+  }
+  
+  @mixin box-commons {
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px -2px;
+  }
+  
+  @mixin wrap-flex {
+    @extend .flex;
+    flex-wrap: wrap;
+  }
+  
+  @mixin color-commons {
+    background-color: #1693A7;
+  }
+  
+  @mixin answers {
+      border-radius: 7px;
+      background-color: white;
+      color: black;
+  }
+
+
+
+@mixin justifications {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+

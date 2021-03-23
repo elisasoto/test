@@ -1,0 +1,22 @@
+@import './common.scss';
+
+.form {
+    @include tester;
+    @include justifications;
+}
+
+
+.button {
+    width: 200px;
+    height: 50px;
+    @include center-flex;
+    @include box-commons;
+    background-color: #E6781E;
+      
+    &--hover {
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0px 0px 0px 0px;
+      }
+    }
+  }
