@@ -1,7 +1,10 @@
 @import './common.scss';
 
+p {
+  color: red
+}
+
 .form {
-    @include tester;
     @include justifications;
 }
 
