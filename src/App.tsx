@@ -37,17 +37,6 @@ const App:React.FunctionComponent = ():ReactElement => {
         getCategories(categoriesURL)
     }, [])
     
-    
-    // This effect calls the trivia questions to render in the trivia section
-    // @team: hay que crear una funcion que obtenga los values de quizOptionz y revise que propiedades tiene, si existen o no para popular la URL final del fetch de las preguntas como abajo se muestra
-    // si el objeto es null porque todo está en any, la URL se queda como está. Si alguna propiedad es elegida, hay que modificar la URL con un tipo como el de aabajo
-    // si no hay ninguno: https://opentdb.com/api.php?amount=15
-    // si hay category: https://opentdb.com/api.php?amount=10&category=10
-    // si hay difficulty: https://opentdb.com/api.php?amount=10&difficulty=easy
-    // si hay type: https://opentdb.com/api.php?amount=10&type=multiple
-    // todas https://opentdb.com/api.php?amount=10&category=10&difficulty=easy&type=multiple
-    //console.log(quizOptions, quizURL);
-    
     // form handlers and props
     const { register, handleSubmit, errors } = useForm()
     
