@@ -1,5 +1,5 @@
 import { useState, useEffect, ReactElement } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 import './styles/app.scss'
 import './styles/quiz.scss'
@@ -10,35 +10,34 @@ import { mockedTrivia } from './constants/mocked-trivia.js'
 import Form from './components/form/form'
 import Quiz from './components/quiz/quiz'
 
-import {Difficulty} from './constants/constants'
+import {Difficulty, categoriesURL} from './constants/constants'
+import {AsycError, FormValues, Questions, CategoryList} from './constants/type'
 
 
-const categoriesURL = 'https://opentdb.com/api_category.php'
-let quizURL = 'https://opentdb.com/api.php?amount=15'
-
-
-type CategoryList = {
-    id: string, 
-    name: string,
-} 
 
 
 const App:React.FunctionComponent = ():ReactElement => {
-    const [categoryList, setCategoryList] = useState<CategoryList[]>([])
-    const [quizOptions, setQuizOptions] = useState<any>(null)
-    const [questions, setQuestions] = useState<any[]>([])
-
+    const [categoryList, setCategoryList] = useState<any[]>([]) 
+    const [questions, setQuestions] = useState<Questions[]>([])
+    
+    const getCategories = async(url:string):Promise<CategoryList|AsycError> => {
+        try{
+            const result = await(await fetch(categoriesURL)).json() 
+            setCategoryList(result.trivia_categories)
+            return {success:true, category: result.trivia_categories}
+        }catch(error){
+            console.info(error.message)
+            return { success: false}
+        }
+    }
+    
+    
     // This effect calls the array of categories and renders it in a select
     useEffect(() => {
-        fetch(categoriesURL)
-            .then((res) => res.json())
-            .then((data) => {
-                setCategoryList(data.trivia_categories)
-            })
+        getCategories(categoriesURL)
     }, [])
-
-    console.log(questions)
-
+    
+    
     // This effect calls the trivia questions to render in the trivia section
     // @team: hay que crear una funcion que obtenga los values de quizOptionz y revise que propiedades tiene, si existen o no para popular la URL final del fetch de las preguntas como abajo se muestra
     // si el objeto es null porque todo está en any, la URL se queda como está. Si alguna propiedad es elegida, hay que modificar la URL con un tipo como el de aabajo
@@ -48,31 +47,26 @@ const App:React.FunctionComponent = ():ReactElement => {
     // si hay type: https://opentdb.com/api.php?amount=10&type=multiple
     // todas https://opentdb.com/api.php?amount=10&category=10&difficulty=easy&type=multiple
     //console.log(quizOptions, quizURL);
-    useEffect(() => {
-    //     fetch(quizURL)
-    //         .then((res) => res.json())
-    //         .then((data) => {
-                 setQuestions(mockedTrivia.results)
-    //         })
-     }, [quizOptions])
-
-
     
     // form handlers and props
     const { register, handleSubmit, errors } = useForm()
     
-    function handleSubmitForm(values: any) {
-      console.log(values)
-      setQuizOptions(values)
-    }
+    const onSubmit: SubmitHandler<FormValues> = async(data) => {
+        const baseURL = `https://opentdb.com/api.php?amount=${data.number}&type=multiple`
+        const categoryURL = data.category? `${baseURL}&category=${data.category}`: baseURL 
+        const difficultyURL = data.difficulty? `${categoryURL}&difficulty=${data.difficulty}`: baseURL 
+        const result = await(await fetch(difficultyURL)).json()
+        setQuestions(result.results)
+    }; 
     
-// esta funcion randomiza las preguntas
+    
+    // esta funcion randomiza las preguntas
 // como tipearla para poder hacer return de la funcion y poder hacer el map de las respuestas correctamente. 
-    if (questions.length > 0 ){
-      const {question, correct_answer, incorrect_answers} = questions[0]
-    const shuffleAnswers = [correct_answer, ...incorrect_answers].sort(()=>Math.random()-0.5)
-    console.log(shuffleAnswers)
-    }
+    // if (questions.length > 0 ){
+    //   const {correct_answer, incorrect_answers} = questions[0]
+    // const shuffleAnswers = [correct_answer, ...incorrect_answers].sort(()=>Math.random()-0.5)
+    // console.log(shuffleAnswers)
+    // }
 
 
     return (
@@ -81,17 +75,16 @@ const App:React.FunctionComponent = ():ReactElement => {
             <h2>OUR OPEN TRIVIA</h2>
             <form
                 className='form'
-                onSubmit={handleSubmit((values) => handleSubmitForm(values))}>
+                onSubmit={handleSubmit(onSubmit)}>
                 <label>Elige una categoría: </label>
                 <br />
                 <select name='category' ref={register({ required: false })}>
                     <option value=''>Any</option>
-                    {categoryList.map((category, i) => (
+                    {categoryList.map((element, i) => (
                         <option
-                            key={category.id}
-                            value={category.id}
-                            placeholder='a'>
-                            {category.name}
+                            key={element.id}
+                            value={element.id}>
+                            {element.name}
                         </option>
                     ))}
                 </select>
@@ -115,7 +108,6 @@ const App:React.FunctionComponent = ():ReactElement => {
                     max:15,
                     })
                 }/>
-
                 {errors.number && errors.number.type === 'required' ? (
                     <p>This field is required</p>
                 ) : null}
@@ -132,7 +124,6 @@ const App:React.FunctionComponent = ():ReactElement => {
             
             <Quiz/>
             <div className='container-trivia'>
-                <h4>TRIVIA!</h4>
                 {questions.length > 0 ? (
                     <>
                         <div className='question'>
@@ -150,7 +141,7 @@ const App:React.FunctionComponent = ():ReactElement => {
                         </div>
                     </>
                 ) : (
-                    <h4>Loading...</h4>
+                    <h4>Please select your questions above!</h4>
                 )}
 
             </div>

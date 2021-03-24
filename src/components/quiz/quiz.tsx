@@ -1,8 +1,10 @@
 import {ReactElement} from 'react'
 
+import {QuestionsProps} from '../../constants/type'
+
 const Quiz:React.FunctionComponent = ():ReactElement => {
     return (
-        <h1>I will be a quiz component</h1>
+        <h1>i will b a quiz component</h1>
     )
 }
 

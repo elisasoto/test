@@ -4,6 +4,9 @@ enum Difficulty {
     HARD = 'hard',
 } 
 
+const categoriesURL:string = 'https://opentdb.com/api_category.php'
+
 export {
     Difficulty,
+    categoriesURL,
 }
