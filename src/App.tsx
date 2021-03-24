@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
 
 import './styles/app.scss'
@@ -10,31 +10,21 @@ import { mockedTrivia } from './constants/mocked-trivia.js'
 import Form from './components/form/form'
 import Quiz from './components/quiz/quiz'
 
+import {Difficulty} from './constants/constants'
+
+
 const categoriesURL = 'https://opentdb.com/api_category.php'
 let quizURL = 'https://opentdb.com/api.php?amount=15'
 
 
-enum Difficulty {
-    EASY= 'easy',
-    MEDIUM = 'medium', 
-    HARD = 'hard',
-}  
-const type = [
-    {
-        type: 'multiple',
-        alias: 'Multiple Choice',
-    },
-    {
-        type: 'boolean',
-        alias: 'True / False',
-    },
-]
+type CategoryList = {
+    id: string, 
+    name: string,
+} 
 
 
-console.log(Object.keys(Difficulty))
-
-function App() {
-    const [categoryList, setCategoryList] = useState<any[]>([])
+const App:React.FunctionComponent = ():ReactElement => {
+    const [categoryList, setCategoryList] = useState<CategoryList[]>([])
     const [quizOptions, setQuizOptions] = useState<any>(null)
     const [questions, setQuestions] = useState<any[]>([])
 
@@ -47,7 +37,7 @@ function App() {
             })
     }, [])
 
-    console.log(quizOptions)
+    console.log(questions)
 
     // This effect calls the trivia questions to render in the trivia section
     // @team: hay que crear una funcion que obtenga los values de quizOptionz y revise que propiedades tiene, si existen o no para popular la URL final del fetch de las preguntas como abajo se muestra
@@ -69,7 +59,7 @@ function App() {
 
     
     // form handlers and props
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, errors } = useForm()
     
     function handleSubmitForm(values: any) {
       console.log(values)
@@ -117,16 +107,18 @@ function App() {
                     ))}
                 </select>
                 <br />
-                <label>¿Qué tipo de preguntas quieres integrar?</label>
+                <label>Selecciona el Número de Preguntas que quieres integrar</label>
                 <br />
-                <select name='type' ref={register({ required: false })}>
-                    <option value=''>Any</option>
-                    {type.map((type, i) => (
-                        <option key={i} value={type.type} placeholder='a'>
-                            {type.alias}
-                        </option>
-                    ))}
-                </select>
+                <input type='number' name='number' placeholder='10' min='1' max='15' ref={
+                    register({required: true, 
+                    min:1,
+                    max:15,
+                    })
+                }/>
+
+                {errors.number && errors.number.type === 'required' ? (
+                    <p>This field is required</p>
+                ) : null}
                 <br />
                 <button
                     type='submit'
