@@ -1,0 +1,45 @@
+[33mcommit a5e7043796f12481b9cf89dfd5084345e60d41d7[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Wed Mar 24 20:21:38 2021 +0100
+
+    Revert "new feats added"
+    
+    This reverts commit babe9f4e3615ed9a33e0d7b19eeb9c62a8de7542.
+
+[33mcommit 3eb1e8716531ca87633c34b2d54ad4bf68638d3a[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Wed Mar 24 20:19:23 2021 +0100
+
+    Revert "ajustes"
+    
+    This reverts commit 71ca1a3287d2346298bcf5d9a2f6c82a4e6837f9.
+
+[33mcommit babe9f4e3615ed9a33e0d7b19eeb9c62a8de7542[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Tue Mar 23 21:17:56 2021 +0100
+
+    new feats added
+
+[33mcommit 0f7a4209b5838ab2f5f4de673f5437a259843a9c[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Tue Mar 23 01:01:24 2021 +0100
+
+    new feats: initial css added | randomized answers added, missing type for a propper return | mocking api answers | issue on trivia error display on initial render solved
+
+[33mcommit 1c6c04ca5219ea37aea2e5fecf4f2320a5a7f6f9[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Sun Mar 21 11:15:57 2021 +0100
+
+    New Adjustems on app
+
+[33mcommit 1d9484cb160ef569a601d2d8afda04b38997e87a[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Sat Mar 20 22:48:50 2021 +0100
+
+    initial project phase | fetches to be resolved
+
+[33mcommit efac513fa0af432e5522e3bbb1e3108489fac3ad[m
+Author: elisasoto <elisasotoperez@gmail.com>
+Date:   Sat Mar 20 19:22:32 2021 +0100
+
+    Initialize project using Create React App

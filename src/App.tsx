@@ -8,7 +8,7 @@ import './styles/container.scss'
 import './constants/mocked-trivia.js'
 import { mockedTrivia } from './constants/mocked-trivia.js'
 import { categoriesURL, Difficulty } from './constants/constants'
-import { Answers, AsycError, CategoryList, Questions } from './constants/types'
+import { Answers, AsycError, CategoryList, Questions, CategoriesType } from './constants/types'
 import { FormValues } from './constants/types'
 
 import Form from './components/form/form'
@@ -20,12 +20,6 @@ const App: React.FunctionComponent = (): ReactElement => {
     const [shuffleAnswers, setshuffleAnswers] = useState<Answers[]>([])
 
     // This effect calls the array of categories and renders it in a select
-
-    type CategoriesType = {
-        success: Boolean
-        category: string[]
-    }
-
     const getCategories = async (
         url: string
     ): Promise<CategoriesType | AsycError> => {
@@ -45,14 +39,11 @@ const App: React.FunctionComponent = (): ReactElement => {
 
     // form handlers and props
     const { register, handleSubmit, errors } = useForm<FormValues>()
-    const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        const defaultURL: string = `https://opentdb.com/api.php?amount=${data.numberofquestions}&type=multiple`
-        const categoryURL: string = data.category
-            ? `${defaultURL}&category=${data.category}&type=multiple`
-            : defaultURL
-        const difficultyURL: string = data.difficulty
-            ? `${categoryURL}&difficulty=${data.difficulty}&type=multiple`
-            : defaultURL
+    const onSubmit: SubmitHandler<FormValues> = async ({ numberofquestions, category, difficulty }:FormValues) => {
+        const amountQuery:string = `?amount=${numberofquestions}`;
+        const categoryQuery:string = category ? `&category=${category}` : '';
+        const difficultyQuery:string = difficulty ? `&difficulty=${difficulty}` : '';
+        const defaultURL:string = `https://opentdb.com/api.php${amountQuery}${categoryQuery}${difficultyQuery}`
         // API call to set questions
         // const response = await fetch(difficultyURL)
         // const json = await response.json()
@@ -69,12 +60,13 @@ const App: React.FunctionComponent = (): ReactElement => {
         const { correct_answer, incorrect_answers } = questions[1]
         const shuffled = [correct_answer, ...incorrect_answers].sort(
             () => Math.random() - 0.5
-        )
+            )
+        // setshuffleAnswers(shuffled)
     }
 
     return (
         <div className='App'>
-            {/*<Form onSubmit={handleSubmit((values) => handleSubmitForm(values))} />*/}
+            {/*<Form />*/}
 
             <form className='form' onSubmit={handleSubmit(onSubmit)}>
                 <label>Elige una categoría: </label>

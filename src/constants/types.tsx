@@ -1,6 +1,30 @@
+type AsycError = {
+    success: false
+}
+
 type CategoryList = {
     id: string;
     name: string;
+}
+
+type CategoriesType = {
+    success: Boolean
+    category: string[]
+}
+
+enum Categories {
+    HISTORY = '9',
+    GEOGRAPHY = '10',
+}
+
+enum Difficulties {
+    EASY = 'easy',
+}
+
+type QuizForm = {
+    questions:number;
+    difficulty:Difficulties;
+    category:Categories;
 }
 
 type Questions = {
@@ -17,21 +41,18 @@ type Answers = {
     incorrect: string[];
 }
 
-type AsycError = {
-    success: false
-}
 
-interface QuizProps {
-    questions: any[];
-}
 
 type FormValues = {
     category: string, 
     difficulty: string, 
     numberofquestions: string,
-
+    
 }
 
+interface QuizProps {
+    questions: any[];
+}
 
 export type {
     Answers,
@@ -40,4 +61,5 @@ export type {
     FormValues,
     CategoryList,
     Questions,
+    CategoriesType
 }
